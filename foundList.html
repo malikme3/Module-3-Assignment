@@ -1,9 +1,40 @@
 <div>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .error {
+            color: #D8000C;
+            background-color: #FFBABA;
+        }
+    </style>
     <ol>
-        <li ng-repeat="name in list.myItems">
-            <span> Menu Name: {{name.name}} </span>
-            <button ng-click='list.onRemove({index: $index});'> Don't want this one!</button>
-        </li>
+
+        <!-- <span> Menu Name: {{name.name}} </span> -->
+        <table style="width:100%" ng-if="list.myItems.length > 0">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price Large</th>
+                <th>Description</th>
+                <th>Order</th>
+            </tr>
+            <tr ng-repeat="name in list.myItems">
+                <td>{{name.id}}</td>
+                <td>{{name.name}}</td>
+
+                <td>{{name.price_large}}</td>
+                <td>{{name.description}}</td>
+                <td><button ng-click='list.onRemove({index: $index});'> Don't want this one!</button></td>
+            </tr>
+            </tr>
+        </table>
+
+
     </ol>
 </div>
 <div class="error" ng-if="list.myItems.length === 0"> Nothing Found !! Please try with different search word.</div>
