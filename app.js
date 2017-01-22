@@ -14,6 +14,7 @@
                 myItems: '<',
                 onRemove: '&'
             },
+            templateUrl: 'foundList.html',
             controller: 'NarrowItDownController as list',
             bindToController: true
         };
