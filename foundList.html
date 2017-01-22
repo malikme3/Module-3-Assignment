@@ -1,0 +1,9 @@
+<div>
+    <ol>
+        <li ng-repeat="name in list.myItems">
+            <span> Menu Name: {{name.name}} </span>
+            <button ng-click='list.onRemove({index: $index});'> Don't want this one!</button>
+        </li>
+    </ol>
+</div>
+<div class="error" ng-if="list.myItems.length === 0"> Nothing Found !! Please try with different search word.</div>
