@@ -26,27 +26,15 @@
     function NarrowItDownController(MenuSearchService, $filter) {
         var ctrl = this;
 
-        var searchText = ctrl.searchedItem;
         // getting filtered list based on provided search input
         ctrl.findItems = function() {
             ctrl.foundItems = [];
-            var promise = MenuSearchService.getMatchedMenuItems();
-            promise.then(function(response) {
-                    ctrl.category = response.data.menu_items;
-                    angular.forEach(ctrl.category, function(item) {
-
-                        if (item.description.toLowerCase().indexOf(ctrl.searchedItem.toLowerCase()) >= 0) ctrl.foundItems.push(item);
-
-                    })
-                })
-                .catch(function(error) {
-                    console.log("Something went wroing");
-                });
+            ctrl.foundItems = MenuSearchService.getMatchedMenuItems(ctrl.searchedItem);
         };
 
         // Removing unwanted menu for searched menu list
         ctrl.removeItem = function(itemIndex) {
-            ctrl.foundItems.splice(itemIndex, 1);
+            MenuSearchService.removeItem(itemIndex);
         }
 
     };
@@ -56,16 +44,27 @@
 
     function MenuSearchService($http, ApiBasePath, $filter) {
         var service = this;
+        var foundItems = [];
 
-        service.getMatchedMenuItems = function() {
+        service.getMatchedMenuItems = function(searchText) {
             var response = $http({
-                method: "GET",
-                url: (ApiBasePath + "/menu_items.json")
-            });
-            return response;
+                    method: "GET",
+                    url: (ApiBasePath + "/menu_items.json")
+                }).then(function(response) {
+                    var menuItems = response.data.menu_items;
+                    angular.forEach(menuItems, function(item) {
+
+                        if (item.description.toLowerCase().indexOf(searchText.toLowerCase()) >= 0) foundItems.push(item);
+
+                    })
+                })
+                .catch(function(error) {
+                    console.log("Something went wroing");
+                });
+            return foundItems;
         };
         service.removeItem = function(itemIndex) {
-            items[0].splice(itemIndex, 1);
+            foundItems.splice(itemIndex, 1);
         };
 
     }
